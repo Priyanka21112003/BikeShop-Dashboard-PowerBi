@@ -17,6 +17,35 @@ After analyzing the data:
 ✅ Conclusion: **A slight price increase does not negatively impact demand**. In fact, demand increased significantly, suggesting an opportunity to enhance profitability with careful pricing adjustments.
 
 **Key actions during analysis:**
+- Connected Power BI to **SQL Server Management Studio (SSMS)** to import the data.
+- Imported and transformed the dataset using the following SQL query:
+
+```sql
+USE [BikeShop Project];
+
+WITH CTE AS (
+    SELECT * FROM bike_share_yr_0
+    UNION ALL
+    SELECT * FROM bike_share_yr_1
+)
+-- Run this query together with the above CTE
+SELECT 
+    dteday,
+    season,
+    a.yr,
+    weekday,
+    hr,
+    rider_type,
+    riders,
+    price,
+    COGS,
+    riders * price AS revenue,
+    riders * price - COGS AS profit
+FROM CTE a
+LEFT JOIN cost_table b
+ON a.yr = b.yr;
+```
+
 - Added a new **Year** column to the dataset for easy slicing.
 - Applied **Conditional Formatting** to distinguish years (2021 and 2022).
 - Created a custom measure for **Profit Margin**:
